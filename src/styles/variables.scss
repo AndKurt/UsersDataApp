@@ -1,0 +1,51 @@
+// Colors
+$blue: #0070f3;
+$grey: #6d7175;
+$light-grey: #f6f6f7;
+$red: #f44336;
+
+//mixin
+@mixin df {
+  display: flex;
+}
+
+@mixin df-align-center {
+  @include df;
+  align-items: center;
+}
+
+@mixin flex-column {
+  @include df;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  @include df-align-center;
+  flex-direction: column;
+}
+
+@mixin flex-column-center-center {
+  @include flex-column-center;
+  justify-content: center;
+}
+
+@mixin textH1 {
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 64px;
+}
+
+@mixin text16 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@mixin text20 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+@mixin text36 {
+  font-size: 36px;
+  line-height: 42px;
+}
