@@ -27,6 +27,12 @@ h1 {
   text-transform: uppercase;
 }
 
+h4 {
+  @include text20;
+  text-transform: uppercase;
+  color: $brown;
+}
+
 main {
   width: 100%;
   flex: 1 1 auto;
