@@ -10,6 +10,39 @@ export const loginValidation = {
   },
 };
 
+export const emailValidation = {
+  required: REQUIRED,
+  validate: (value: string) => {
+    if (
+      !value.match(
+        /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      return 'The email address is not valid. Examples: test@google.com, test@mail.ru and etc.';
+    }
+    return true;
+  },
+};
+
+export const firstNameValidation = {
+  required: REQUIRED,
+  validate: (value: string) => {
+    if (!value.match(/^[a-zA-Z]{1,}$/)) {
+      return 'Minimum 1character. Only letters';
+    }
+    return true;
+  },
+};
+export const lastNameValidation = {
+  required: REQUIRED,
+  validate: (value: string) => {
+    if (!value.match(/^[a-zA-Z]{1,}$/)) {
+      return 'Minimum 1character. Only letters';
+    }
+    return true;
+  },
+};
+
 export const passwordValidation = {
   required: REQUIRED,
   validate: (value: string) => {
