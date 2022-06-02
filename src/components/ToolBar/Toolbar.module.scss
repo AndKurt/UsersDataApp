@@ -1,6 +1,10 @@
 @import '../../styles/variables.scss';
 
-.main {
+.toolbar {
   @include flex-column-center;
-  padding: 20px 0px;
+  margin-bottom: 15px;
+
+  h4 {
+    margin-bottom: 15px;
+  }
 }
