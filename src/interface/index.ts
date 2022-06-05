@@ -11,13 +11,21 @@ export interface ISignUpForm extends ISignInForm {
 }
 
 export interface IUsersData {
-  id: number;
+  _id: number;
+  login: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
+  isLocked: boolean;
   registered: string;
   lastVisit: string;
-  status: boolean;
+  password?: string;
+}
+
+export interface IRegisterData {
   login: string;
+  email: string;
+  firstName: string;
+  lastName: string;
   password: string;
 }

@@ -1,25 +1,26 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridRowId, GridValueGetterParams } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToolBar } from '..';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { getUsersApi } from '../../redux/actions/getUsers';
 
 const columns: GridColDef[] = [
   {
-    field: 'id',
+    field: '_id',
     filterable: false,
     hideable: false,
     headerName: 'ID',
-    width: 50,
+    width: 220,
   },
   { field: 'firstName', hideable: false, headerName: 'First name', width: 90 },
   { field: 'lastName', hideable: false, headerName: 'Last name', width: 90 },
-  { field: 'email', sortable: false, headerName: 'E-mail', width: 250 },
+  { field: 'email', sortable: false, headerName: 'E-mail', width: 220 },
   {
     field: 'fullName',
     hideable: false,
     headerName: 'Full name',
-    width: 150,
+    width: 220,
     valueGetter: (params: GridValueGetterParams) =>
       `${params.row.firstName} ${params.row.lastName}`,
   },
@@ -43,24 +44,30 @@ const columns: GridColDef[] = [
     filterable: false,
     hideable: false,
     description: 'This column has a value getter and is not sortable.',
-    valueGetter: (params: GridValueGetterParams) => `${params.row.status ? 'Locked' : 'Unlocked'} `,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.isLocked ? 'Locked' : 'Unlocked'} `,
     width: 100,
   },
 ];
 
 export const UsersTable = () => {
   const [arrIds, setArrIds] = useState<GridRowId[]>([]);
-  const { usersData } = useAppSelector((state) => state.usersDataReducer);
+  const dispatch = useAppDispatch();
+  const { users } = useAppSelector((state) => state.usersDataReducer);
+
+  useEffect(() => {
+    dispatch(getUsersApi());
+  }, []);
 
   return (
     <div style={{ minHeight: 500, height: 100, width: '80%' }}>
       <ToolBar arrIds={arrIds} />
       <DataGrid
-        rows={usersData}
+        rows={users}
         columns={columns}
-        pageSize={usersData.length}
-        rowsPerPageOptions={[usersData.length]}
-        getRowId={(usersData) => usersData.id}
+        pageSize={users.length}
+        rowsPerPageOptions={[users.length]}
+        getRowId={(usersData) => usersData._id}
         checkboxSelection
         hideFooter={true}
         scrollbarSize={50}

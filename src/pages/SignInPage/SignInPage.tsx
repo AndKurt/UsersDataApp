@@ -4,20 +4,31 @@ import styles from './SignInPage.module.scss';
 import { loginValidation, passwordValidation } from '../../utils/validation';
 import { Controller, SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { ISignInForm } from '../../interface';
+import { useAppDispatch } from '../../redux/hooks';
+import { loginApi } from '../../redux/actions/login';
+import { useNavigate } from 'react-router-dom';
 
 export const SignInPage = () => {
   const { handleSubmit, control, reset, register } = useForm<ISignInForm>();
+  const dispatch = useAppDispatch();
   const { errors } = useFormState({
     control,
   });
+  const navigation = useNavigate();
 
   const onsubmit: SubmitHandler<ISignInForm> = (data) => {
-    console.log(data);
     if (data) {
+      dispatch(
+        loginApi({
+          login: data.login,
+          password: data.password,
+        })
+      );
       reset({
         login: '',
         password: '',
       });
+      navigation('/main');
     }
   };
 

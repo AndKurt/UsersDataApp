@@ -31,7 +31,7 @@ export const SignGroupButtons = () => {
         <Button
           variant="outlined"
           onClick={() => {
-            navigate('/signin');
+            navigate('/login');
           }}
         >
           SignIn
@@ -39,7 +39,7 @@ export const SignGroupButtons = () => {
         <Button
           variant="outlined"
           onClick={() => {
-            navigate('/signup');
+            navigate('/register');
           }}
         >
           SignUp

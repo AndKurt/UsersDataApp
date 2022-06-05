@@ -1,14 +1,21 @@
 import { GridRowId } from '@mui/x-data-grid';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUsersData } from '../../interface';
-import { MOCK_DATA } from '../../mock/mock_data';
+import { deleteUserApi } from '../actions/deleteUser';
+import { getUsersApi } from '../actions/getUsers';
+import { registerAPI } from '../actions/register';
 
-interface IUsersDataSlice {
-  usersData: IUsersData[];
+interface IRegisterSlice {
+  userData: IUsersData | null;
+  users: IUsersData[] | [];
+  isLoading: boolean;
+  error: string;
 }
-
-const initialState: IUsersDataSlice = {
-  usersData: MOCK_DATA,
+const initialState: IRegisterSlice = {
+  userData: null,
+  users: [],
+  isLoading: false,
+  error: '',
 };
 
 export const usersDataSlice = createSlice({
@@ -18,9 +25,9 @@ export const usersDataSlice = createSlice({
     setUsersStatusLock(state, action: PayloadAction<GridRowId[]>) {
       const arrIds = action.payload;
       for (let i = 0; i < arrIds.length; i++) {
-        state.usersData.filter((user) => {
-          if (user.id === arrIds[i]) {
-            user.status = true;
+        state.users.filter((user) => {
+          if (user._id === arrIds[i]) {
+            user.isLocked = true;
           }
         });
       }
@@ -28,9 +35,9 @@ export const usersDataSlice = createSlice({
     setUsersStatusUnlock(state, action: PayloadAction<GridRowId[]>) {
       const arrIds = action.payload;
       for (let i = 0; i < arrIds.length; i++) {
-        state.usersData.filter((user) => {
-          if (user.id === arrIds[i]) {
-            user.status = false;
+        state.users.filter((user) => {
+          if (user._id === arrIds[i]) {
+            user.isLocked = false;
           }
         });
       }
@@ -38,8 +45,51 @@ export const usersDataSlice = createSlice({
     deleteUsers(state, action: PayloadAction<GridRowId[]>) {
       const arrIds = action.payload;
       for (let i = 0; i < arrIds.length; i++) {
-        state.usersData = [...state.usersData].filter((user) => user.id !== arrIds[i]);
+        state.users = [...state.users].filter((user) => user._id !== arrIds[i]);
       }
+    },
+  },
+  extraReducers: {
+    [registerAPI.pending.type]: (state) => {
+      state.isLoading = true;
+      state.error = '';
+    },
+    [registerAPI.fulfilled.type]: (state, action: PayloadAction<IUsersData>) => {
+      state.isLoading = false;
+      state.error = '';
+      state.userData = action.payload;
+    },
+    [registerAPI.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.userData = null;
+    },
+    [getUsersApi.pending.type]: (state) => {
+      state.isLoading = true;
+      state.error = '';
+    },
+    [getUsersApi.fulfilled.type]: (state, action: PayloadAction<IUsersData[]>) => {
+      state.isLoading = false;
+      state.error = '';
+      state.users = action.payload;
+    },
+    [getUsersApi.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.users = [];
+    },
+    [deleteUserApi.pending.type]: (state) => {
+      state.isLoading = true;
+      state.error = '';
+    },
+    [deleteUserApi.fulfilled.type]: (state) => {
+      state.isLoading = false;
+      state.error = '';
+    },
+    [deleteUserApi.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.users = [];
     },
   },
 });

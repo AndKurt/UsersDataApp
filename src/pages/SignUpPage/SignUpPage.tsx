@@ -10,18 +10,32 @@ import {
 } from '../../utils/validation';
 import { Controller, SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { ISignUpForm } from '../../interface';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { registerAPI } from '../../redux/actions/register';
+import { useNavigate } from 'react-router-dom';
 
 export const SignUpPage = () => {
   const { handleSubmit, control, register, watch, reset } = useForm<ISignUpForm>();
+  const { error } = useAppSelector((state) => state.usersDataReducer);
   const { errors } = useFormState({
     control,
   });
+  const dispatch = useAppDispatch();
+  const navigation = useNavigate();
 
   const password = watch('password');
 
   const onsubmit: SubmitHandler<ISignUpForm> = (data) => {
-    console.log(data);
     if (data) {
+      dispatch(
+        registerAPI({
+          login: data.login,
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          password: data.password,
+        })
+      );
       reset({
         login: '',
         email: '',
@@ -30,6 +44,9 @@ export const SignUpPage = () => {
         password: '',
         repeatPassword: '',
       });
+      if (!error) {
+        navigation('/login');
+      }
     }
   };
 
@@ -201,6 +218,7 @@ export const SignUpPage = () => {
             )}
           />
         </div>
+        {!error && <h5>{error}</h5>}
         <Button
           type="submit"
           variant="contained"

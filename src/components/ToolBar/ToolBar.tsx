@@ -7,6 +7,7 @@ import { Button, ButtonGroup } from '@mui/material';
 import { useAppDispatch } from '../../redux/hooks';
 import { GridRowId } from '@mui/x-data-grid';
 import { usersDataSlice } from '../../redux/reducers/usersData';
+import { deleteUserApi } from '../../redux/actions/deleteUser';
 
 interface IToolBar {
   arrIds: GridRowId[];
@@ -18,6 +19,8 @@ export const ToolBar = ({ arrIds }: IToolBar) => {
   const handleDelete = () => {
     console.log('delete', arrIds);
     dispatch(deleteUsers(arrIds));
+    const test = [...arrIds];
+    test.forEach((id) => dispatch(deleteUserApi(id as string)));
   };
   const handleUnlock = () => {
     console.log('unlock', arrIds);
