@@ -52,16 +52,17 @@ const columns: GridColDef[] = [
 export const UsersTable = () => {
   const [arrIds, setArrIds] = useState<GridRowId[]>([]);
   const { users } = useAppSelector((state) => state.usersDataReducer);
+  const [test] = useState(users);
 
   return (
     <div style={{ minHeight: 500, height: 100, width: '80%' }}>
       <ToolBar arrIds={arrIds} />
       <DataGrid
-        rows={users}
+        rows={test}
         columns={columns}
-        pageSize={users.length}
-        rowsPerPageOptions={[users.length]}
-        getRowId={(usersData) => usersData._id}
+        pageSize={test.length}
+        rowsPerPageOptions={[test.length]}
+        getRowId={(test) => test._id}
         checkboxSelection
         hideFooter={true}
         scrollbarSize={50}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import styles from './SignInPage.module.scss';
 import { loginValidation, passwordValidation } from '../../utils/validation';
@@ -6,11 +6,12 @@ import { Controller, SubmitHandler, useForm, useFormState } from 'react-hook-for
 import { ISignInForm } from '../../interface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { loginApi } from '../../redux/actions/login';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { loginSlice } from '../../redux/reducers/loginSlice';
 import { Loader } from '../../components';
 
 export const SignInPage = () => {
+  const [isAuth, setIsAuth] = useState(false);
   const { handleSubmit, control, reset, register } = useForm<ISignInForm>();
   const dispatch = useAppDispatch();
   const { errors } = useFormState({
@@ -32,15 +33,12 @@ export const SignInPage = () => {
           login: data.login,
           password: data.password,
         })
-      );
+      ).unwrap();
       reset({
         login: '',
         password: '',
       });
-      if (!error) {
-        navigation('/main');
-      }
-      navigation('/');
+      navigation('/main');
     }
   };
 
@@ -103,7 +101,7 @@ export const SignInPage = () => {
               />
             )}
           />
-          {error && <p>{error}</p>}
+          {error && <p className={styles.error}>{error}</p>}
           <Button
             type="submit"
             variant="contained"

@@ -27,7 +27,7 @@ export const emailValidation = {
 export const firstNameValidation = {
   required: REQUIRED,
   validate: (value: string) => {
-    if (!value.match(/^[a-zA-Z]{1,}$/)) {
+    if (!value.match(/^[a-zA-Z]{2,}$/)) {
       return 'Minimum 1character. Only letters';
     }
     return true;
@@ -36,7 +36,7 @@ export const firstNameValidation = {
 export const lastNameValidation = {
   required: REQUIRED,
   validate: (value: string) => {
-    if (!value.match(/^[a-zA-Z]{1,}$/)) {
+    if (!value.match(/^[a-zA-Z]{2,}$/)) {
       return 'Minimum 1character. Only letters';
     }
     return true;

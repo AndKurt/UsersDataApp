@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { getUserApi } from '../../redux/actions/getUser';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import styles from './WelcomePage.module.scss';
 
 export const WelcomePage = () => {
   const dispatch = useAppDispatch();
+  const { isTokenActive } = useAppSelector((state) => state.loginReducer);
 
   useEffect(() => {
-    dispatch(getUserApi());
+    if (!isTokenActive) {
+      dispatch(getUserApi());
+    }
   }, []);
 
   return (

@@ -26,9 +26,9 @@ export const SignUpPage = () => {
 
   const password = watch('password');
 
-  const onsubmit: SubmitHandler<ISignUpForm> = (data) => {
+  const onsubmit: SubmitHandler<ISignUpForm> = async (data) => {
     if (data) {
-      dispatch(
+      await dispatch(
         registerAPI({
           login: data.login,
           email: data.email,
@@ -36,7 +36,8 @@ export const SignUpPage = () => {
           lastName: data.lastName,
           password: data.password,
         })
-      );
+      ).unwrap();
+      navigation('/login');
       reset({
         login: '',
         email: '',
@@ -45,10 +46,8 @@ export const SignUpPage = () => {
         password: '',
         repeatPassword: '',
       });
-      if (!error) {
-        navigation('/login');
-      }
     }
+    reset();
   };
 
   return (
@@ -221,7 +220,7 @@ export const SignUpPage = () => {
               )}
             />
           </div>
-          {!error && <h5>{error}</h5>}
+          {error && <p className={styles.error}>{error}</p>}
           <Button
             type="submit"
             variant="contained"

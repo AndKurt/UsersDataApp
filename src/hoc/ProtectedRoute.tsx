@@ -1,20 +1,23 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUserApi } from '../redux/actions/getUser';
 import { useAppDispatch } from '../redux/hooks';
-import { loginSlice } from '../redux/reducers/loginSlice';
-import { getTokenFromLS } from '../utils';
 
 export interface LayoutProps {
   children: JSX.Element;
 }
 
 export const ProtectedRoute = (props: LayoutProps): JSX.Element => {
-  const token = getTokenFromLS();
   const dispatch = useAppDispatch();
+  const navigation = useNavigate();
 
-  if (!token) {
-    return <Navigate to="/" />;
-  }
-  dispatch(loginSlice.actions.setTokenStatus(true));
+  useEffect(() => {
+    dispatch(getUserApi())
+      .unwrap()
+      .catch((err) => {
+        if (err) navigation('/');
+      });
+  }, []);
+
   return props.children;
 };
