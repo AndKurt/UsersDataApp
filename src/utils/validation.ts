@@ -45,10 +45,4 @@ export const lastNameValidation = {
 
 export const passwordValidation = {
   required: REQUIRED,
-  //validate: (value: string) => {
-  //if (!value.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{7,}$/)) {
-  //  return 'Minimum 7 characters, at least one letter, one number and one special character';
-  //}
-  //  return true;
-  //},
 };
