@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridRowId, GridValueGetterParams } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ToolBar } from '..';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { getUsersApi } from '../../redux/actions/getUsers';
+import { useAppSelector } from '../../redux/hooks';
 
 const columns: GridColDef[] = [
   {
@@ -45,19 +44,14 @@ const columns: GridColDef[] = [
     hideable: false,
     description: 'This column has a value getter and is not sortable.',
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.isLocked ? 'Locked' : 'Unlocked'} `,
+      `${params.row.isLocked ? 'Blocked' : 'Unblocked'} `,
     width: 100,
   },
 ];
 
 export const UsersTable = () => {
   const [arrIds, setArrIds] = useState<GridRowId[]>([]);
-  const dispatch = useAppDispatch();
   const { users } = useAppSelector((state) => state.usersDataReducer);
-
-  useEffect(() => {
-    dispatch(getUsersApi());
-  }, []);
 
   return (
     <div style={{ minHeight: 500, height: 100, width: '80%' }}>

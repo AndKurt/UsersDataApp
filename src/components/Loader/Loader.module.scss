@@ -1,0 +1,22 @@
+@import '../../styles/variables.scss';
+
+.loader {
+  display: inline-block;
+  border: 10px solid $blue;
+  border-radius: 50%;
+  border-top: 10px solid $cream;
+  border-right: 10px solid $green;
+  border-bottom: 10px solid $brown;
+  width: 100px;
+  height: 100px;
+  animation: loader 1s linear infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

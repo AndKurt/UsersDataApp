@@ -4,6 +4,7 @@ import { IUsersData } from '../../interface';
 import { deleteUserApi } from '../actions/deleteUser';
 import { getUsersApi } from '../actions/getUsers';
 import { registerAPI } from '../actions/register';
+import { updateUserApi } from '../actions/updateUser';
 
 interface IRegisterSlice {
   userData: IUsersData | null;
@@ -87,6 +88,19 @@ export const usersDataSlice = createSlice({
       state.error = '';
     },
     [deleteUserApi.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.users = [];
+    },
+    [updateUserApi.pending.type]: (state) => {
+      state.isLoading = true;
+      state.error = '';
+    },
+    [updateUserApi.fulfilled.type]: (state) => {
+      state.isLoading = false;
+      state.error = '';
+    },
+    [updateUserApi.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
       state.users = [];

@@ -7,8 +7,6 @@ export const deleteUserApi = createAsyncThunk(
   'user/deleteUserApi',
   async (userId: string, thunkApi) => {
     try {
-      console.log(userId);
-
       const TOKEN = getTokenFromLS();
       await axios.delete(`${BASE_URL}/delete?id=${userId}`, {
         headers: { Authorization: TOKEN },

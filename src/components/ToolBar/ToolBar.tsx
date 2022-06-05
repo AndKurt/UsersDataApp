@@ -8,6 +8,9 @@ import { useAppDispatch } from '../../redux/hooks';
 import { GridRowId } from '@mui/x-data-grid';
 import { usersDataSlice } from '../../redux/reducers/usersData';
 import { deleteUserApi } from '../../redux/actions/deleteUser';
+import { updateUserApi } from '../../redux/actions/updateUser';
+import { useNavigate } from 'react-router-dom';
+import { loginSlice } from '../../redux/reducers/loginSlice';
 
 interface IToolBar {
   arrIds: GridRowId[];
@@ -15,20 +18,37 @@ interface IToolBar {
 
 export const ToolBar = ({ arrIds }: IToolBar) => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigate();
   const { setUsersStatusUnlock, setUsersStatusLock, deleteUsers } = usersDataSlice.actions;
+  const { setTokenStatus } = loginSlice.actions;
+
+  const logOutUser = () => {
+    const activeUserId = arrIds.find((id) => id === localStorage.getItem('id'));
+    if (activeUserId) {
+      localStorage.clear();
+      dispatch(setTokenStatus(false));
+      navigation('/login');
+    }
+  };
   const handleDelete = () => {
-    console.log('delete', arrIds);
-    dispatch(deleteUsers(arrIds));
-    const test = [...arrIds];
-    test.forEach((id) => dispatch(deleteUserApi(id as string)));
+    if (arrIds.length > 0) {
+      dispatch(deleteUsers(arrIds));
+      arrIds.forEach((id) => dispatch(deleteUserApi(id as string)));
+    }
+    logOutUser();
   };
   const handleUnlock = () => {
-    console.log('unlock', arrIds);
-    dispatch(setUsersStatusUnlock(arrIds));
+    if (arrIds.length > 0) {
+      dispatch(setUsersStatusUnlock(arrIds));
+      arrIds.forEach((id) => dispatch(updateUserApi({ id: id as string, isLocked: false })));
+    }
   };
   const handleLock = () => {
-    console.log('lock', arrIds);
-    dispatch(setUsersStatusLock(arrIds));
+    if (arrIds.length > 0) {
+      dispatch(setUsersStatusLock(arrIds));
+      arrIds.forEach((id) => dispatch(updateUserApi({ id: id as string, isLocked: true })));
+      logOutUser();
+    }
   };
 
   return (
@@ -41,11 +61,11 @@ export const ToolBar = ({ arrIds }: IToolBar) => {
             <DeleteForeverTwoToneIcon />
           </Button>
           <Button color="success" sx={{ width: '150px' }} onClick={handleUnlock}>
-            Unlock
+            Unblock
             <LockOpenTwoToneIcon />
           </Button>
           <Button color="warning" sx={{ width: '150px' }} onClick={handleLock}>
-            Lock
+            Block
             <LockTwoToneIcon />
           </Button>
         </ButtonGroup>
